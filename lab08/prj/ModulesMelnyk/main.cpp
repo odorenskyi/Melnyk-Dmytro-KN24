@@ -30,5 +30,6 @@ const double Pi = 3.141592653589793238; // Константа Пі з висок
     double bottom = 10 * Pi * pow(z, 4); // Обчислення знаменника дробу
 
     double result = first + top / bottom; // Обчислення кінцевого результату
+
     return result;
 }
