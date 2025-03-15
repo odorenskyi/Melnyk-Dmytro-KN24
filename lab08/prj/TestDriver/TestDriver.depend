@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1742046660 source:c:\users\dimam\onedrive\desktop\melnyk-dmytro-kn24\lab08\prj\testdriver\main.cpp
+	<iostream>
+	<windows.h>
+	"ModulesMelnyk.h"
+
+1742046101 c:\users\dimam\onedrive\desktop\melnyk-dmytro-kn24\lab08\prj\modulesmelnyk.h
+
