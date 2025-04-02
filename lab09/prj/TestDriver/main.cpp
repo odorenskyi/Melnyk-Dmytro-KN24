@@ -11,6 +11,9 @@ int main()
 {
     SetConsoleOutputCP(65001);
     SetConsoleCP(65001);
+
+    developer_information(); // Виведення інформації про розробника
+
     // Тестування функції 9.1 (wave_height)
     double grade, waveHeight;
     std::string description;

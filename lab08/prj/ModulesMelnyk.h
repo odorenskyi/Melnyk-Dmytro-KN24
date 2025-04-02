@@ -6,6 +6,7 @@ using namespace std;
 #include <iostream>
 
 double s_calculation (double x, double y, double z);
+void developer_information();
 
 //lab 9
 void wave_height(double grade, double& wave_height, string& Description); // 9.1
