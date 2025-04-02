@@ -1,6 +1,10 @@
 #include <iostream>
 #include <cmath>
 
+void developer_information() {
+    cout << "Мельник Дмитро ©, Усі права захищені." << endl;
+}
+
 // Функція для обчислення значення математичного виразу за заданими параметрами
 double s_calculation (double x, double y, double z){
 
