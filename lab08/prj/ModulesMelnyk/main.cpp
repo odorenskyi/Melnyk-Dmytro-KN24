@@ -36,7 +36,7 @@ const double Pi = 3.141592653589793238; // Константа Пі з висок
     //лаб 9
     // 9.1
 void wave_height (double grade, double& wave_height, std::string& Desсription){
-    
+
     if (grade < 0 || grade > 9) { // Перевірка на допустимість значення grade
         Desсription = "Invalid grade value. It should be between 0 and 10.";
         wave_height = 0; // Присвоєння NaN у випадку недопустимого значення
@@ -99,6 +99,9 @@ void count_numbers(int n) {
 }
 
 // 9.3
+#include <iostream>
+#include <bitset>
+
 void binary_count(int N) {
     if (N < 0 || N > 70700) {
         std::cout << "Неприпустиме значення. N повинно бути в діапазоні від 0 до 70700." << std::endl;
@@ -106,15 +109,13 @@ void binary_count(int N) {
     }
 
     int bit_D1 = (N >> 1) & 1; // Отримання значення біта D1
-    int count = 0;
+    std::bitset<17> binary(N); // 17 біт достатньо для 70700
+    int count = bit_D1 ? (17 - binary.count()) : binary.count(); // Тернарний оператор
 
-    if (bit_D1 == 1) {
-        count = __builtin_popcount(~N & ((1 << (sizeof(N) * 8)) - 1)); // Кількість нулів
-    } else {
-        count = __builtin_popcount(N); // Кількість одиниць
-    }
-
-    std::cout << "Результат: " << count << std::endl;
+    std::cout << "Бінарне представлення числа N: " << binary << std::endl;
+    std::cout << "Біт D1 дорівнює " << bit_D1 << ". "
+              << (bit_D1 ? "Кількість нулів: " : "Кількість одиниць: ")
+              << count << std::endl;
 }
 
 // 9.4
