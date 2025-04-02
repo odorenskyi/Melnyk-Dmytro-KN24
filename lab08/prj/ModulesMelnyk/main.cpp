@@ -33,3 +33,143 @@ const double Pi = 3.141592653589793238; // Константа Пі з висок
 
     return result;
 }
+    //лаб 9
+    // 9.1
+void wave_height (double grade, double& wave_height, std::string& Desсription){
+    
+    if (grade < 0 || grade > 9) { // Перевірка на допустимість значення grade
+        Desсription = "Invalid grade value. It should be between 0 and 10.";
+        wave_height = 0; // Присвоєння NaN у випадку недопустимого значення
+        return;
+    }
+
+    if (grade == 0) {
+        wave_height = 0;
+        Desсription = "Calm-Glassy";
+    } else if (grade == 1) {
+        wave_height = 0.1;
+        Desсription = "calm-rippled";
+    } else if (grade == 2) {
+        wave_height = 0.5;
+        Desсription = "Smooth-wavelet";
+    } else if (grade == 3) {
+        wave_height = 1.25;
+        Desсription = "Slight";
+    } else if (grade == 4) {
+        wave_height = 2.5;
+        Desсription = "Moderate";
+    } else if (grade == 5) {
+        wave_height = 4.0;
+        Desсription = "rough";
+    } else if (grade == 6) {
+        wave_height = 6.0;
+        Desсription = "Very rough";
+    } else if (grade == 7) {
+        wave_height = 9.0;
+        Desсription = "High";
+    } else if (grade == 8) {
+        wave_height = 12.0;
+        Desсription = "Very high";
+    } else if (grade == 9) {
+        wave_height = 15.0;
+        Desсription = "Phenomenal";
+    }
+}
+
+// 9.2
+void count_numbers(int n) {
+    int count_zero = 0; // Лічильник чисел, рівних нулю
+    int count_in_range = 0; // Лічильник чисел у діапазоні [5, 1024]
+
+    for (int i = 0; i < n; ++i) {
+        int num;
+        std::cout << "Введіть число " << i + 1 << ": ";
+        std::cin >> num;
+
+        if (num == 0) {
+            ++count_zero; // Збільшення лічильника для чисел, рівних нулю
+        }
+        if (num >= 5 && num <= 1024) {
+            ++count_in_range; // Збільшення лічильника для чисел у діапазоні [5, 1024]
+        }
+    }
+
+    std::cout << "Кількість чисел, рівних нулю: " << count_zero << std::endl;
+    std::cout << "Кількість чисел у діапазоні [5, 1024]: " << count_in_range << std::endl;
+}
+
+// 9.3
+void binary_count(int N) {
+    if (N < 0 || N > 70700) {
+        std::cout << "Неприпустиме значення. N повинно бути в діапазоні від 0 до 70700." << std::endl;
+        return;
+    }
+
+    int bit_D1 = (N >> 1) & 1; // Отримання значення біта D1
+    int count = 0;
+
+    if (bit_D1 == 1) {
+        count = __builtin_popcount(~N & ((1 << (sizeof(N) * 8)) - 1)); // Кількість нулів
+    } else {
+        count = __builtin_popcount(N); // Кількість одиниць
+    }
+
+    std::cout << "Результат: " << count << std::endl;
+}
+
+// 9.4
+void task_9_4() {
+    char choice;
+    do {
+        std::cout << "Введіть символ ('q', 'e', 'r', 't'): ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 'q': {
+                double x, y, z;
+                std::cout << "Введіть x, y, z: ";
+                std::cin >> x >> y >> z;
+                double result = s_calculation(x, y, z);
+                if (std::isnan(result)) {
+                    std::cout << "Помилка обчислення." << std::endl;
+                } else {
+                    std::cout << "Результат: " << result << std::endl;
+                }
+                break;
+            }
+            case 'e': {
+                double grade, waveHeight;
+                std::string description;
+                std::cout << "Введіть градацію (0-9): ";
+                std::cin >> grade;
+                wave_height(grade, waveHeight, description);
+                std::cout << "Висота хвилі: " << waveHeight << ", Опис: " << description << std::endl;
+                break;
+            }
+            case 'r': {
+                int n;
+                std::cout << "Введіть кількість чисел: ";
+                std::cin >> n;
+                count_numbers(n);
+                break;
+            }
+            case 't': {
+                int N;
+                std::cout << "Введіть число N: ";
+                std::cin >> N;
+                binary_count(N);
+                break;
+            }
+            default:
+                std::cout << "Невірний символ. Спробуйте ще раз." << std::endl;
+                break;
+        }
+
+        char exitChoice;
+        std::cout << "Бажаєте вийти? (y/n): ";
+        std::cin >> exitChoice;
+        if (exitChoice == 'y' || exitChoice == 'Y') {
+            break;
+        }
+    } while (true);
+}
