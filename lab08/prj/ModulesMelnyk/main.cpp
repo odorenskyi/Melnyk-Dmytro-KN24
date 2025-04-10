@@ -1,5 +1,12 @@
 #include <iostream>
 #include <cmath>
+#include <fstream>
+#include <string>
+#include <locale>
+#include <vector>
+#include <algorithm>
+#include <ctime>
+#include <filesystem>
 
 void developer_information() {
     std::cout << "Мельник Дмитро ©, Усі права захищені." << std::endl;
@@ -120,4 +127,173 @@ void binary_count(int N) {
     std::cout << "Біт D1 дорівнює " << bit_D1 << ". "
               << (bit_D1 ? "Кількість нулів: " : "Кількість одиниць: ")
               << count << std::endl;
+}
+
+// 10.1
+void process_text_file(const std::string& input_file, const std::string& output_file) {
+    std::ifstream infile(input_file);
+    if (!infile.is_open()) {
+        std::cerr << "Не вдалося відкрити вхідний файл." << std::endl;
+        return;
+    }
+    
+    // Зчитуємо весь файл
+    std::vector<std::string> lines;
+    std::string line;
+    while (std::getline(infile, line)) {
+        lines.push_back(line);
+    }
+    infile.close();
+
+    // Знаходимо рядок автора та мови
+    std::string author_line;
+    std::string language_line;
+    size_t start_idx = 0;
+    size_t end_idx = lines.size();
+
+    // Шукаємо рядок з інформацією про автора (зазвичай на початку)
+    if (!lines.empty() && lines[0].find("Автор:") != std::string::npos) {
+        author_line = lines[0];
+        start_idx = 1;
+        // Пропускаємо порожні рядки після автора
+        while (start_idx < lines.size() && lines[start_idx].empty()) {
+            start_idx++;
+        }
+    }
+
+    // Шукаємо рядок з інформацією про мову (зазвичай в кінці)
+    if (!lines.empty() && lines.back().find("Мова тексту:") != std::string::npos) {
+        language_line = lines.back();
+        end_idx = lines.size() - 1;
+        // Пропускаємо порожні рядки перед мовою
+        while (end_idx > start_idx && lines[end_idx - 1].empty()) {
+            end_idx--;
+        }
+    }
+
+    // Збираємо абзаци
+    std::vector<std::string> paragraphs;
+    std::string paragraph;
+    
+    for (size_t i = start_idx; i < end_idx; ++i) {
+        if (lines[i].empty()) {
+            if (!paragraph.empty()) {
+                paragraphs.push_back(paragraph);
+                paragraph.clear();
+            }
+        } else {
+            if (!paragraph.empty()) {
+                paragraph += "\n";
+            }
+            paragraph += lines[i];
+        }
+    }
+    
+    if (!paragraph.empty()) {
+        paragraphs.push_back(paragraph);
+    }
+
+    // Реверсуємо абзаци
+    if (paragraphs.size() > 1) {
+        std::reverse(paragraphs.begin(), paragraphs.end());
+    }
+
+    // Записуємо результат
+    std::ofstream outfile(output_file);
+    if (!outfile.is_open()) {
+        std::cerr << "Не вдалося відкрити вихідний файл." << std::endl;
+        return;
+    }
+
+    // Записуємо автора
+    if (!author_line.empty()) {
+        outfile << author_line << "\n\n";
+    } else {
+        outfile << "Автор: Мельник Дмитро, KN-24, Кропивницький, 2025\n\n";
+    }
+
+    // Записуємо абзаци
+    for (size_t i = 0; i < paragraphs.size(); ++i) {
+        outfile << paragraphs[i];
+        if (i < paragraphs.size() - 1) {
+            outfile << "\n\n";
+        }
+    }
+
+    // Записуємо інформацію про мову
+    if (!language_line.empty()) {
+        outfile << "\n\n" << language_line;
+    } else {
+        // Визначаємо мову тексту
+        bool is_english = true;
+        for (const auto& p : paragraphs) {
+            if (p.find_first_of("абвгґдеєжзиіїйклмнопрстуфхцчшщьюяАБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ") != std::string::npos) {
+                is_english = false;
+                break;
+            }
+        }
+        outfile << "\n\n" << "Мова тексту: " << (is_english ? "англійська" : "українська") << ".";
+    }
+
+    outfile.close();
+    std::cout << "Обробка файлу завершена. Результат записано у " << output_file << std::endl;
+}
+
+// 10.2
+void append_file_info(const std::string& file_path) {
+    std::ifstream infile(file_path);
+    if (!infile.is_open()) {
+        std::cerr << "Не вдалося відкрити файл для читання." << std::endl;
+        return;
+    }
+
+    int comma_count = 0, period_count = 0;
+    char ch;
+
+    // Підрахунок кількості ком та крапок
+    while (infile.get(ch)) {
+        if (ch == ',') ++comma_count;
+        if (ch == '.') ++period_count;
+    }
+    infile.close();
+
+    // Отримання поточної дати та часу
+    std::time_t now = std::time(nullptr);
+    std::tm* local_time = std::localtime(&now);
+    char time_buffer[100];
+    std::strftime(time_buffer, sizeof(time_buffer), "%Y-%m-%d %H:%M:%S", local_time);
+
+    // Додавання інформації у файл
+    std::ofstream outfile(file_path, std::ios::app);
+    if (!outfile.is_open()) {
+        std::cerr << "Не вдалося відкрити файл для запису." << std::endl;
+        return;
+    }
+
+    outfile << "\nКількість ком: " << comma_count << "\n";
+    outfile << "Кількість крапок: " << period_count << "\n";
+    outfile << "Дата і час допису: " << time_buffer << "\n";
+
+    outfile.close();
+    std::cout << "Інформацію успішно дописано у файл." << std::endl;
+}
+
+// 10.3
+void append_calculation_and_binary(const std::string& file_path, double x, double y, double z, int b) {
+    std::ofstream outfile(file_path, std::ios::app);
+    if (!outfile.is_open()) {
+        std::cerr << "Не вдалося відкрити файл для запису." << std::endl;
+        return;
+    }
+
+    // Обчислення результату функції s_calculation
+    double calculation_result = s_calculation(x, y, z);
+    outfile << "Результат s_calculation(" << x << ", " << y << ", " << z << "): " 
+            << (std::isnan(calculation_result) ? "NAN" : std::to_string(calculation_result)) << "\n";
+
+    // Перетворення числа b у двійковий код
+    outfile << "Число " << b << " у двійковому коді: " << std::bitset<32>(b) << "\n";
+
+    outfile.close();
+    std::cout << "Результати успішно дописано у файл." << std::endl;
 }
