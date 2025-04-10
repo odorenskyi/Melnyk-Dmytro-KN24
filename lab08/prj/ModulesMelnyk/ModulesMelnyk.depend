@@ -1,7 +1,14 @@
 # depslib dependency file v1.0
-1743606218 source:c:\users\dimam\onedrive\desktop\melnyk-dmytro-kn24\lab08\prj\modulesmelnyk\main.cpp
+1744289042 source:c:\users\dimam\onedrive\desktop\melnyk-dmytro-kn24\lab08\prj\modulesmelnyk\main.cpp
 	<iostream>
 	<cmath>
+	<fstream>
+	<string>
+	<locale>
+	<vector>
+	<algorithm>
+	<ctime>
+	<filesystem>
 	<iostream>
 	<bitset>
 

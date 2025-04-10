@@ -17,8 +17,8 @@ int main() {
     do {
         std::cout << "Оберіть дію:\n";
         std::cout << "1. Обробити текстовий файл\n";
-        std::cout << "2. Додати інформацію до файлу\n";
-        std::cout << "3. Обчислити значення функції та записати в двійковий файл\n";
+        std::cout << "2. Додати інформацію до вихідного файлу\n";
+        std::cout << "3. Обчислити значення функції та записати в двійковий у вихідний файл\n";
         std::cout << "0. Вийти\n";
         std::cout << "Ваш вибір: ";
         std::cin >> choice;
@@ -36,7 +36,7 @@ int main() {
             }
             case 2: {
                 std::string outputFile;
-                std::cout << "Введіть ім'я файлу для додавання інформації: ";
+                std::cout << "Введіть ім'я вихідного файлу для додавання інформації: ";
                 std::cin >> outputFile;
                 append_file_info(outputFile);
                 break;
@@ -49,7 +49,7 @@ int main() {
                 std::cout << "Введіть число b: ";
                 std::cin >> b;
                 std::string file_path;
-                std::cout << "Введіть ім'я файлу для запису: ";
+                std::cout << "Введіть ім'я вихідного файлу для запису: ";
                 std::cin >> file_path;
                 append_calculation_and_binary(file_path, x, y, z, b);
                 break;
